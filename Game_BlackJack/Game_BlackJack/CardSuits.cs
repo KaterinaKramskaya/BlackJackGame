@@ -8,9 +8,9 @@ namespace Game_BlackJack
 {
     enum CardSuits
     {
-        hearts,
-        spades,
-        clubs,
-        diamonds
+        hearts = 0,
+        spades = 1,
+        diamonds = 2,
+        clubs = 3,
     }
 }

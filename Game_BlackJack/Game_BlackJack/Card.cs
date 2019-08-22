@@ -9,8 +9,9 @@ namespace Game_BlackJack
     struct Card
     {
         public CardsNamesAndPoints cardName;
-        public CardSuits cardSuit;
         public int cardPoints;
+        public CardSuits cardSuit;
+
 
         public Card(CardsNamesAndPoints cardNameAndPoints, CardSuits cardSuit)
         {
@@ -21,30 +22,15 @@ namespace Game_BlackJack
 
         public string CardPrint()
         {
-            if (cardSuit == 0)
+            if ((int)cardSuit % 2 == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                return $" ♥ {cardName}";
             }
-            if ((int)cardSuit == 1)
+            else
             {
                 Console.ForegroundColor = ConsoleColor.White;
-                return $" ♠ {cardName}";
-
             }
-            if ((int)cardSuit == 2)
-            {
-                Console.ForegroundColor = ConsoleColor.White;
-                return $" ♣ {cardName}";
-            }
-            if ((int)cardSuit == 3)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                return $" ♦ {cardName}";
-            }
-            Console.ResetColor();
-
-            return string.Empty;
+            return $" {cardName} of {cardSuit}";
         }
     }
 }

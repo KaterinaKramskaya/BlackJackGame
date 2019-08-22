@@ -9,13 +9,13 @@ namespace Game_BlackJack
     enum CardsNamesAndPoints
     {
         jack = 2,
-        lady,
-        king,
+        lady = 3,
+        king = 4,
         six = 6,
-        seven,
-        eight,
-        nine,
-        ten,
-        ace
+        seven = 7,
+        eight = 8,
+        nine = 9,
+        ten = 10,
+        ace = 11
     }
 }
