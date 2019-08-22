@@ -1,0 +1,14 @@
+C:\Users\krams\source\repos\Game_BlackJack\Game_BlackJack\bin\Debug\Game_BlackJack.exe.config
+C:\Users\krams\source\repos\Game_BlackJack\Game_BlackJack\bin\Debug\Game_BlackJack.exe
+C:\Users\krams\source\repos\Game_BlackJack\Game_BlackJack\bin\Debug\Game_BlackJack.pdb
+C:\Users\krams\source\repos\Game_BlackJack\Game_BlackJack\obj\Debug\Game_BlackJack.csprojAssemblyReference.cache
+C:\Users\krams\source\repos\Game_BlackJack\Game_BlackJack\obj\Debug\Game_BlackJack.csproj.CoreCompileInputs.cache
+C:\Users\krams\source\repos\Game_BlackJack\Game_BlackJack\obj\Debug\Game_BlackJack.exe
+C:\Users\krams\source\repos\Game_BlackJack\Game_BlackJack\obj\Debug\Game_BlackJack.pdb
+D:\C Sharp. Homeworks\BlackJackGame\Game_BlackJack\Game_BlackJack\bin\Debug\Game_BlackJack.exe.config
+D:\C Sharp. Homeworks\BlackJackGame\Game_BlackJack\Game_BlackJack\bin\Debug\Game_BlackJack.exe
+D:\C Sharp. Homeworks\BlackJackGame\Game_BlackJack\Game_BlackJack\bin\Debug\Game_BlackJack.pdb
+D:\C Sharp. Homeworks\BlackJackGame\Game_BlackJack\Game_BlackJack\obj\Debug\Game_BlackJack.csprojAssemblyReference.cache
+D:\C Sharp. Homeworks\BlackJackGame\Game_BlackJack\Game_BlackJack\obj\Debug\Game_BlackJack.csproj.CoreCompileInputs.cache
+D:\C Sharp. Homeworks\BlackJackGame\Game_BlackJack\Game_BlackJack\obj\Debug\Game_BlackJack.exe
+D:\C Sharp. Homeworks\BlackJackGame\Game_BlackJack\Game_BlackJack\obj\Debug\Game_BlackJack.pdb
