@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Game_BlackJack
 {
-    enum CardsNamesAndPoints
+    enum CardsPoints
     {
         jack = 2,
         lady = 3,

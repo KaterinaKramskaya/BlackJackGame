@@ -18,9 +18,6 @@ namespace Game_BlackJack
             Console.OutputEncoding = Encoding.UTF8;
             Random rnd = new Random();
 
-            Player user1 = new Player();
-            Player user2 = new Player();
-
             bool startNextRound = true;
             int roundCounter = 1;
 
@@ -42,6 +39,9 @@ namespace Game_BlackJack
             //1.1 Start of the round.
             while (startNextRound)
             {
+                Player user1 = new Player();
+                Player user2 = new Player();
+
                 int resultOfChoice = ChoiceWhoStartsGame();
                 if (resultOfChoice == 1)
                 {
@@ -65,7 +65,11 @@ namespace Game_BlackJack
                 //2. Creating pack of cards: pack of cards and players hands.
                 int cardsCountInPack = 36;
                 Card[] packOfCards = new Card[cardsCountInPack];
+                int topCard = packOfCards.Length - 1;
+
                 PackOfCardsFiller(packOfCards);
+                ShuffleCards(packOfCards, rnd);
+
 
                 int cardsHandMaxCount = 8; // index of player hand array is max count of cards, that player can collect before getting 21 points. 
                                            // 4 * 2 (jacks) + 3 * 3 (ladies) + 1 * 4 (king) = 21, so index = 8 cards.
@@ -75,8 +79,8 @@ namespace Game_BlackJack
 
                 //3. Receiving of first two cards.
                 int cardsCountForDealing = 2;
-                PrintReceivedCards(ref user1, ref packOfCards, rnd, cardsCountForDealing);
-                PrintReceivedCards(ref user2, ref packOfCards, rnd, cardsCountForDealing);
+                ReceivingOfCard(ref user1, packOfCards, rnd, ref topCard, cardsCountForDealing);
+                ReceivingOfCard(ref user2, packOfCards, rnd, ref topCard, cardsCountForDealing);
                 if (string.Compare(user1.name, computerName) == 0)
                 {
                     PrintPlayerHand(user2);
@@ -94,30 +98,30 @@ namespace Game_BlackJack
                 int checkForBlackJack = CheckForBlackJack(user1, user2, ref user1ChoiceToContinue, ref user2ChoiceToContinue);
                 if (checkForBlackJack == 0)
                 {
-                    DecisionToContinueDealing(user1, ref user1ChoiceToContinue);
-                    DecisionToContinueDealing(user2, ref user2ChoiceToContinue);
+                    DecisionToContinueDealing(user1);
+                    DecisionToContinueDealing(user2);
                 }
 
                 while (user1ChoiceToContinue || user2ChoiceToContinue)
                 {
                     if (user1ChoiceToContinue == true && user2ChoiceToContinue == true)
                     {
-                        PrintReceivedCards(ref user1, ref packOfCards, rnd, cardsCountForDealing);
-                        PrintReceivedCards(ref user2, ref packOfCards, rnd, cardsCountForDealing);
+                        ReceivingOfCard(ref user1, packOfCards, rnd, ref topCard, cardsCountForDealing);
+                        ReceivingOfCard(ref user2, packOfCards, rnd, ref topCard, cardsCountForDealing);
 
-                        DecisionToContinueDealing(user1, ref user1ChoiceToContinue);
-                        DecisionToContinueDealing(user2, ref user2ChoiceToContinue);
+                        user1ChoiceToContinue = DecisionToContinueDealing(user1);
+                        user2ChoiceToContinue = DecisionToContinueDealing(user2);
 
                     }
                     if (user1ChoiceToContinue == true && user2ChoiceToContinue == false)
                     {
-                        PrintReceivedCards(ref user1, ref packOfCards, rnd, cardsCountForDealing);
-                        DecisionToContinueDealing(user1, ref user1ChoiceToContinue);
+                        ReceivingOfCard(ref user1, packOfCards, rnd, ref topCard, cardsCountForDealing);
+                        user1ChoiceToContinue = DecisionToContinueDealing(user1);
                     }
                     if (user1ChoiceToContinue == false && user2ChoiceToContinue == true)
                     {
-                        PrintReceivedCards(ref user2, ref packOfCards, rnd, cardsCountForDealing);
-                        DecisionToContinueDealing(user2, ref user2ChoiceToContinue);
+                        ReceivingOfCard(ref user2, packOfCards, rnd, ref topCard, cardsCountForDealing);
+                        user2ChoiceToContinue = DecisionToContinueDealing(user2);
                     }
                 }
 
@@ -160,7 +164,7 @@ namespace Game_BlackJack
             Console.WriteLine("  |       -  W E L C O M E   T O   T H E   B L A C K J A C K   G A M E  -        |");
             Console.WriteLine("  +------------------------------------------------------------------------------+");
             Console.WriteLine();
-        } 
+        }
 
         public static void PrintRules()
         {
@@ -228,7 +232,7 @@ namespace Game_BlackJack
                         break;
                 }
             }
-        } 
+        }
 
         public static int ChoiceWhoStartsGame()
         {
@@ -263,18 +267,18 @@ namespace Game_BlackJack
                 }
             }
             return 0;
-        } 
+        }
 
         public static void PrintRoundCount(int roundCounter)
         {
             Console.WriteLine("  +----------------------+");
             Console.WriteLine($"     - R O U N D    {roundCounter} -");
             Console.WriteLine("  +----------------------+");
-        } 
+        }
 
         public static Card[] PackOfCardsFiller(Card[] packOfCards)
         {
-            Array cardNames = Enum.GetValues(typeof(CardsNamesAndPoints));
+            Array cardNames = Enum.GetValues(typeof(CardsPoints));
             Array cardSuits = Enum.GetValues(typeof(CardSuits));
             CardSuits cardSuit;
 
@@ -283,30 +287,22 @@ namespace Game_BlackJack
                 cardSuit = (CardSuits)indexOfSuit;
                 foreach (var card in cardNames)
                 {
-                    CardsNamesAndPoints cardName = (CardsNamesAndPoints)card;
+                    CardsPoints cardName = (CardsPoints)card;
                     Card newCard = new Card(cardName, cardSuit);
                     packOfCards[indexOfCard] = newCard;
                     indexOfCard++;
                 }
             }
             return packOfCards;
-        } 
+        }
 
-        public static Card DealingOfCard(ref Card[] packOfCards, ref Player player, Random rnd)
+        public static Card DealingOfCard(Card[] packOfCards, ref int topCard, Random rnd)
         {
-            ShuffleCards(packOfCards, rnd);
-
-            int cardIndex = packOfCards.Length - 1;
-            Card card = packOfCards[cardIndex];
-
-            int withoutDealedCard = packOfCards.Length - 1;
-
-            Card[] tempArray = new Card[withoutDealedCard];
-            Array.Copy(packOfCards, tempArray, withoutDealedCard);
-            packOfCards = tempArray;
+            Card card = packOfCards[topCard];
+            topCard--;
 
             return card;
-        } 
+        }
 
         public static Card[] ShuffleCards(Card[] deckOfCards, Random rnd)
         {
@@ -321,12 +317,12 @@ namespace Game_BlackJack
             return deckOfCards;
         }
 
-        public static void PrintReceivedCards(ref Player player, ref Card[] packOfCards, Random rnd, int cardsCount)
+        public static void ReceivingOfCard(ref Player player, Card[] packOfCards, Random rnd, ref int topCard, int cardsCount)
         {
             Card card;
             for (int i = 0; i < cardsCount; i++)
             {
-                card = DealingOfCard(ref packOfCards, ref player, rnd);
+                card = DealingOfCard(packOfCards, ref topCard, rnd);
 
                 player.playerHand[player.cardsCount] = card;
                 player.cardsCount += 1;
@@ -336,14 +332,14 @@ namespace Game_BlackJack
                 {
                     Console.WriteLine("  +---------------------------------------+");
                     Console.Write($"   New card for {player.name} ==>");
-                    Console.WriteLine($"  {card.CardPrint()}");
-                    Console.ResetColor();
-                    Console.WriteLine($"   - Points: {player.pointsCount} -");
+                    card.PrintCard();
                     Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine($"   - Points: {player.pointsCount} -");
                     Console.WriteLine("  +---------------------------------------+");
                 }
             }
-        } 
+        }
 
         public static void PrintPlayerHand(Player player)
         {
@@ -353,15 +349,14 @@ namespace Game_BlackJack
             Console.WriteLine();
             for (int i = 0; i < player.cardsCount; i++)
             {
-                Console.Write($"  {player.playerHand[i].CardPrint()}  ");
+                player.playerHand[i].PrintCard();
             }
-            Console.ResetColor();
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine($"   - Points: {player.pointsCount} -");
             Console.WriteLine("  +---------------------------------------+");
             Thread.Sleep(400);
-        } 
+        }
 
         public static int CheckForBlackJack(Player user1, Player user2, ref bool user1ChoiceToContinue, ref bool user2ChoiceToContinue)
         {
@@ -377,9 +372,9 @@ namespace Game_BlackJack
             {
                 return 0;
             }
-        } 
+        }
 
-        public static void DecisionToContinueDealing(Player player, ref bool userChoiceToContinue)
+        public static bool DecisionToContinueDealing(Player player)
         {
             Thread.Sleep(400);
             if (string.Compare(player.name, computerName) == 0)
@@ -388,13 +383,13 @@ namespace Game_BlackJack
                 {
                     Console.WriteLine("  - Computer decided to stand");
                     Console.WriteLine();
-                    userChoiceToContinue = false;
+                    return false;
                 }
                 else
                 {
                     Console.WriteLine("  - Computer decided to hit");
                     Console.WriteLine();
-                    userChoiceToContinue = true;
+                    return true;
                 }
             }
             else
@@ -403,8 +398,7 @@ namespace Game_BlackJack
                 {
                     Console.WriteLine("  You have more than 21, so it`s time to stop! No cards for you ;)");
                     Console.WriteLine();
-                    userChoiceToContinue = false;
-                    Console.WriteLine();
+                    return false;
                 }
                 else
                 {
@@ -420,15 +414,13 @@ namespace Game_BlackJack
                                 userMadeChoice = true;
                                 Console.WriteLine("  Ok, let`s get from pack one more card for you :)");
                                 Console.WriteLine();
-                                userChoiceToContinue = true;
-                                break;
+                                return true;
 
                             case ConsoleKey.S:
                                 userMadeChoice = true;
                                 Console.WriteLine("  Good, let`s stop dealing cards for you!");
                                 Console.WriteLine();
-                                userChoiceToContinue = false;
-                                break;
+                                return false;
 
                             default:
                                 Console.Write("  Please, make your choice again.\n Hit (h) or stand (s)?\n  ==>");
@@ -439,7 +431,8 @@ namespace Game_BlackJack
                 }
             }
             Thread.Sleep(400);
-        } 
+            return false;
+        }
 
         public static int ResultOfRound(int checkForBlackJack, ref Player user1, ref Player user2)
         {
@@ -495,7 +488,7 @@ namespace Game_BlackJack
             }
         }
 
-        public static void PrintRoundResult(int gameResult, Player user1, Player user2, ref Player computer, ref Player player) 
+        public static void PrintRoundResult(int gameResult, Player user1, Player user2, ref Player computer, ref Player player)
         {
             Thread.Sleep(400);
             Console.WriteLine("  +------------------------------------------------------------------------------+");

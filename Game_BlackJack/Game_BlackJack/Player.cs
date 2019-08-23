@@ -12,7 +12,6 @@ namespace Game_BlackJack
         public int pointsCount;
         public int victoryCount;
         public int cardsCount;
-        public Card[] playerHand; 
+        public Card[] playerHand;
     }
-
 }

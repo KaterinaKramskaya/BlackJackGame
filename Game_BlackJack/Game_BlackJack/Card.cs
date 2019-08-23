@@ -8,21 +8,20 @@ namespace Game_BlackJack
 {
     struct Card
     {
-        public CardsNamesAndPoints cardName;
+        public CardsPoints cardName;
         public int cardPoints;
         public CardSuits cardSuit;
 
-
-        public Card(CardsNamesAndPoints cardNameAndPoints, CardSuits cardSuit)
+        public Card(CardsPoints cardNameAndPoints, CardSuits cardSuit)
         {
             cardName = cardNameAndPoints;
             this.cardSuit = cardSuit;
             cardPoints = (int)cardNameAndPoints;
         }
 
-        public string CardPrint()
+        public void PrintCard()
         {
-            if ((int)cardSuit % 2 == 0)
+            if (cardSuit == CardSuits.hearts || cardSuit == CardSuits.diamonds)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
             }
@@ -30,7 +29,8 @@ namespace Game_BlackJack
             {
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            return $" {cardName} of {cardSuit}";
+            Console.Write($" {cardName} of {cardSuit} ");
+            Console.ResetColor();
         }
     }
 }
