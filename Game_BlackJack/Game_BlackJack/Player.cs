@@ -13,5 +13,12 @@ namespace Game_BlackJack
         public int victoryCount;
         public int cardsCount;
         public Card[] playerHand;
+
+        public void AddCard(Card card)
+        {
+            playerHand[cardsCount] = card;
+            cardsCount += 1;
+            pointsCount += card.cardPoints;
+        }
     }
 }
