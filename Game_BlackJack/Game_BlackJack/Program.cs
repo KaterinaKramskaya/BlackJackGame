@@ -67,7 +67,7 @@ namespace Game_BlackJack
                 Card[] packOfCards = new Card[cardsCountInPack];
                 int topCard = packOfCards.Length - 1;
 
-                PackOfCardsFiller(packOfCards);
+                FillPackOfCards(packOfCards);
                 ShuffleCards(packOfCards, rnd);
 
 
@@ -119,7 +119,7 @@ namespace Game_BlackJack
 
                 while (user1ChoiceToContinue || user2ChoiceToContinue)
                 {
-                    if (user1ChoiceToContinue == true && user2ChoiceToContinue == true)
+                    if (user1ChoiceToContinue && user2ChoiceToContinue)
                     {
                         card = ReceivingOfCard(user1, packOfCards, rnd, topCard);
                         user1.AddCard(card);
@@ -135,7 +135,7 @@ namespace Game_BlackJack
                         user2ChoiceToContinue = DecisionToContinueDealing(user2);
 
                     }
-                    if (user1ChoiceToContinue == true && user2ChoiceToContinue == false)
+                    if (user1ChoiceToContinue && !user2ChoiceToContinue)
                     {
                         card = ReceivingOfCard(user1, packOfCards, rnd, topCard);
                         user1.AddCard(card);
@@ -144,7 +144,7 @@ namespace Game_BlackJack
 
                         user1ChoiceToContinue = DecisionToContinueDealing(user1);
                     }
-                    if (user1ChoiceToContinue == false && user2ChoiceToContinue == true)
+                    if (!user1ChoiceToContinue && user2ChoiceToContinue)
                     {
                         card = ReceivingOfCard(user2, packOfCards, rnd, topCard);
                         user2.AddCard(card);
@@ -312,7 +312,7 @@ namespace Game_BlackJack
             Console.WriteLine("  +----------------------+");
         }
 
-        public static Card[] PackOfCardsFiller(Card[] packOfCards)
+        public static Card[] FillPackOfCards(Card[] packOfCards)
         {
             Array cardNames = Enum.GetValues(typeof(CardsPoints));
             Array cardSuits = Enum.GetValues(typeof(CardSuits));
@@ -360,7 +360,7 @@ namespace Game_BlackJack
 
         public static void PrintCard(Player player, Card card)
         {
-            if (Equals(player.name, computerName) == false)
+            if (!player.name.Equals(computerName))
             {
                 Console.WriteLine("  +---------------------------------------+");
                 Console.Write($"   New card for {player.name} ==>");
@@ -405,7 +405,7 @@ namespace Game_BlackJack
         public static bool DecisionToContinueDealing(Player player)
         {
             Thread.Sleep(400);
-            if (Equals(player.name, computerName) == true)
+            if (player.name.Equals(computerName))
             {
                 if (player.pointsCount >= 18)
                 {
@@ -527,7 +527,7 @@ namespace Game_BlackJack
             Thread.Sleep(400);
             if (gameResult == 3)
             {
-                if (((Equals(user1.name, computerName) == true) && (user1.pointsCount == 22 || user1.pointsCount == 21)) || ((Equals(user2.name, computerName) == true) && (user2.pointsCount == 22 || user2.pointsCount == 21)))
+                if ((user1.name.Equals(computerName) && (user1.pointsCount == 22 || user1.pointsCount == 21)) || (user2.name.Equals(computerName) && (user2.pointsCount == 22 || user2.pointsCount == 21)))
                 {
                     Console.WriteLine("                    COMPUTER HAS BLACKJACK IN THIS ROUND! YOU LOSE!");
                     return 2;
@@ -540,7 +540,7 @@ namespace Game_BlackJack
             }
             if (gameResult == 1)
             {
-                if (Equals(user1.name, computerName) == true)
+                if (user1.name.Equals(computerName))
                 {
                     Console.WriteLine("                    COMPUTER WINS IN THIS ROUND! YOU LOSE!");
                     return 2;
@@ -553,7 +553,7 @@ namespace Game_BlackJack
             }
             if (gameResult == 2)
             {
-                if (Equals(user2.name, computerName) == true)
+                if (user2.name.Equals(computerName))
                 {
                     Console.WriteLine("                    COMPUTER WINS IN THIS ROUND! YOU LOSE!");
                     return 2;
